@@ -1,6 +1,6 @@
 import { START_LOADING, END_LOADING, FETCH_ALL } from '../constants/actionTypes';
 
-export default (state = { isLoading: true, posts: [] }, action : any) => {
+export default (state = { isLoading: true, movies: [] }, action : any) => {
     switch (action.type) {
         case START_LOADING:
             return { ...state, isLoading: true };
@@ -9,7 +9,7 @@ export default (state = { isLoading: true, posts: [] }, action : any) => {
         case FETCH_ALL:
             return {
                 ...state,
-                posts: action.payload.data,
+                movies: action.payload.data,
                 currentPage: action.payload.currentPage,
                 numberOfPages: action.payload.numberOfPages,
               };

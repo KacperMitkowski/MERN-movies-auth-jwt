@@ -1,29 +1,26 @@
-import React, { useEffect} from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, Paper, CircularProgress } from '@material-ui/core';
+import { Grid, CircularProgress, Grow } from '@material-ui/core';
+import MovieModel from '../../models/Movie';
+import Movie from './Movie/Movie';
 import useStyles from './styles';
-import { useDispatch } from 'react-redux';
-import { getMovies } from '../../actions/movies';
-import { useHistory, useLocation } from 'react-router-dom';
-import Pagination from '../Pagination/Pagination';
-
 
 
 const Movies = () => {
-    const { movies, isLoading } = useSelector((state : any) => state.movies);
+    const { movies, isLoading } = useSelector((state: any) => state.movies);
     const classes = useStyles();
 
+    // if (!movies.length && !isLoading) return <>'No movies'</>;
+
     return (
-        !movies.length ? <CircularProgress /> : (
-            <Grid container spacing={3}>
-                {
-                    movies.map((movie: any, index: number) => (
-                        <Grid item xs={12} key={index}>
-                            <Paper className={classes.paper}>{movie.fullplot}</Paper>
-                        </Grid>
-                    ))
-                }
-            </Grid>
+        isLoading ? <CircularProgress /> : (
+            <Grow in={true} timeout={{ enter: 1500 }}>
+                <Grid container spacing={3}>
+                    {movies?.map((movie: MovieModel, index: number) => (
+                        <Movie movie={movie} key={index} />
+                    ))}
+                </Grid>
+            </Grow>
         )
     )
 }

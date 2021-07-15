@@ -5,6 +5,7 @@ import Tomatoe from './tomatoe.js';
 
 const movieSchema = mongoose.Schema({
     plot: { type: String },
+    poster: { type: String },
     genres: { type: [String], default: [] },
     runtime: { type: Number },
     cast: { type: [String], default: [] },
