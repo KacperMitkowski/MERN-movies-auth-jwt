@@ -1,4 +1,4 @@
-import { START_LOADING, END_LOADING, FETCH_ALL } from '../constants/actionTypes';
+import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE } from '../constants/actionTypes';
 
 export default (state = { isLoading: true, movies: [] }, action : any) => {
     switch (action.type) {
@@ -13,6 +13,8 @@ export default (state = { isLoading: true, movies: [] }, action : any) => {
                 currentPage: action.payload.currentPage,
                 numberOfPages: action.payload.numberOfPages,
               };
+        case FETCH_MOVIE:
+            return { ...state, movie: action.payload.movie };
         default:
             return state;
     }

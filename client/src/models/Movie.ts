@@ -3,6 +3,7 @@ import Imdb from "./Imdb";
 import Tomatoe from "./Tomatoe";
 
 class Movie {
+    _id: String = '';
     plot: String = '';
     poster: String = '';
     genres: String[] = [];

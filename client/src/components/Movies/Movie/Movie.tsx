@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import DetailsIcon from '@material-ui/icons/Details';
 import noImage from '../../../images/no-image.png';
+import { useHistory } from 'react-router-dom';
 
 interface props {
     movie: MovieModel,
@@ -14,6 +15,7 @@ interface props {
 
 const Movie = ({ movie }: props) => {
     const classes = useStyles();
+    const history = useHistory();
     const charsInPlot = 200;
     const directors = movie?.directors && movie.directors.length > 0 ? movie.directors.join(', ') : 'Director unknown';
     const genres = movie?.genres && movie?.genres.length > 0 ? movie?.genres.join(', ') : 'Genre unknown';
@@ -53,7 +55,7 @@ const Movie = ({ movie }: props) => {
                             </IconButton>
                         </>
                     }
-                    <Button size="large" color="secondary" variant="contained" className={classes.button}>Details</Button>
+                    <Button size="large" color="secondary" variant="contained" className={classes.button} onClick={() => history.push(`/movies/${movie._id}`)}>Details</Button>
                 </CardActions>
             </Card>
         </Grid>

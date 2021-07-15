@@ -6,6 +6,7 @@ import { createTheme } from '@material-ui/core/styles';
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth';
+import Details from './components/Details/Details';
 
 const theme = createTheme({
   typography: {
@@ -25,6 +26,7 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={() => <Redirect to="/movies?page=1" />} />
             <Route path="/movies" exact component={Home} />
+            <Route path="/movies/:id" exact component={Details} />
             <Route path="/auth" exact component={Auth} />
           </Switch>
         </Container>
