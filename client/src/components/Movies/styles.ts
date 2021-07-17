@@ -6,5 +6,13 @@ export default makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
+    loadingPaper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
+      borderRadius: '4px',
+      height: '75vh',
+  },
   }),
 );

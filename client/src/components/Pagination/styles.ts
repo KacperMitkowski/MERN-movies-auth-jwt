@@ -8,6 +8,7 @@ export default makeStyles(() => ({
   pagination: {
     borderRadius: 4,
     marginTop: '1rem',
+    marginBottom: '1rem',
     padding: '16px',
   },
 }));

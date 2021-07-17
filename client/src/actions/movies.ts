@@ -18,7 +18,7 @@ export const getMovie = (id: any) => async (dispatch : any) => {
         dispatch({ type: START_LOADING });
         const { data } = await api.fetchMovie(id);
 
-        dispatch({ type: FETCH_MOVIE, payload: { post: data } });
+        dispatch({ type: FETCH_MOVIE, payload: { movie: data } });
         dispatch({ type: END_LOADING });
     }
     catch(error) {
