@@ -16,6 +16,8 @@ const Details = () => {
         dispatch(getMovie(id));
     }, [id]);
 
+    console.log(movie);
+
 
     if (isLoading) {
         return (

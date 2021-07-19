@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Award from './award.js';
+import Comment from './comment.js';
 import Imdb from './imdb.js';
 import Tomatoe from './tomatoe.js';
 
@@ -21,7 +22,11 @@ const movieSchema = mongoose.Schema({
     year: { type: Number },
     imdb: { type: Imdb.schema },
     type: { type: String },
-    tomatoes: { type: Tomatoe.schema }
+    tomatoes: { type: Tomatoe.schema },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 });
 
 const Movie = mongoose.model('movie', movieSchema);
