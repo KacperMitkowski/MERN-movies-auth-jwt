@@ -23,10 +23,7 @@ const movieSchema = mongoose.Schema({
     imdb: { type: Imdb.schema },
     type: { type: String },
     tomatoes: { type: Tomatoe.schema },
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
-    }]
+    comments: [Comment.schema]
 });
 
 const Movie = mongoose.model('movie', movieSchema);

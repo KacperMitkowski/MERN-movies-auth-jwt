@@ -1,5 +1,6 @@
 import Comment from '../models/comment.js';
 import Movie from '../models/movie.js';
+import mongoose from 'mongoose';
 
 export const getMovies = async (req, res) => {
     const { page } = req.query;
@@ -21,9 +22,7 @@ export const getMovie = async (req, res) => {
 
     try {
         const movie = await Movie.findById(id).populate("comments");
-        console.log('test');
-        // const comments = await Comment.find({"movie_id": ObjectId("573a13faf29313caabdec1f8")} );
-        // console.log(comments);
+        movie.comments = await Comment.find({"movie_id": new mongoose.Types.ObjectId(id)});
         res.status(200).json(movie);
     }
     catch(error) {
