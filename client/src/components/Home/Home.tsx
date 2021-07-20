@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
 import Movies from '../Movies/Movies';
 import Paginate from '../Pagination/Paginate';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getMovies } from '../../actions/movies';
 
 function useQuery() {

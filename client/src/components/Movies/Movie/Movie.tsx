@@ -1,11 +1,9 @@
 import React from 'react';
-import { Button, Grid, Paper, Card, CardContent, CardActions, Typography, CardMedia, TextField, CardHeader, IconButton } from '@material-ui/core';
+import { Button, Grid, Card, CardContent, CardActions, Typography, CardMedia, IconButton } from '@material-ui/core';
 import useStyles from './styles';
 import MovieModel from '../../../models/Movie';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
-import DetailsIcon from '@material-ui/icons/Details';
 import noImage from '../../../images/no-image.png';
 import { useHistory } from 'react-router-dom';
 

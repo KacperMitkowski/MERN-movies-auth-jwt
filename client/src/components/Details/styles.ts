@@ -1,38 +1,11 @@
+import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     media: {
-        borderRadius: '20px',
-        objectFit: 'cover',
-        width: '100%',
-        maxHeight: '600px',
+        height: '500px',
+    },
 
-    },
-    card: {
-        display: 'flex',
-        width: '100%',
-        [theme.breakpoints.down('sm')]: {
-            flexWrap: 'wrap',
-            flexDirection: 'column',
-        },
-    },
-    section: {
-        borderRadius: '20px',
-        margin: '10px',
-        flex: 1,
-    },
-    imageSection: {
-        marginLeft: '20px',
-        [theme.breakpoints.down('sm')]: {
-            marginLeft: 0,
-        },
-    },
-    recommendedPosts: {
-        display: 'flex',
-        [theme.breakpoints.down('sm')]: {
-            flexDirection: 'column',
-        },
-    },
     loadingPaper: {
         display: 'flex',
         justifyContent: 'center',
@@ -42,13 +15,48 @@ export default makeStyles((theme) => ({
         height: '39vh',
         marginTop: '1rem'
     },
-    commentsOuterContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    commentsInnerContainer: {
+    commentsUpperContainer: {
         height: '200px',
         overflowY: 'auto',
-        marginRight: '30px',
     },
+    commentsLowerContainer: {
+        height: '270px',
+        display: 'flex',
+        flexDirection: 'column',
+        placeContent: 'flex-end'
+
+    },
+
+    noCommentsTypography: {
+        fontStyle: 'italic'
+    },
+
+    accordionActive: {
+        background: red[50],
+        
+    },
+    accordionHover: {
+        '&:hover': {
+            background: red[50]
+        }
+    },
+    updateOrCreateDiv: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontStyle: 'italic'
+    },
+
+    starsDiv: {
+        display: 'flex',
+        justifyContent: 'center',
+        textAlign: 'center',
+        marginTop: '10px',
+        marginBottom: '10px',
+    },
+    
+    votes: {
+        fontSize: '11px',
+        marginTop: '2px',
+        marginLeft: '15px'
+    }
 }));

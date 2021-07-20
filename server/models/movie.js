@@ -13,6 +13,7 @@ const movieSchema = mongoose.Schema({
     num_mflix_comments: { type: Number },
     title: { type: String },
     fullplot: { type: String },
+    languages: {type: [String], default: []},
     countries: { type: [String], default: [] },
     released: { type: Date, default: new Date() },
     directors: { type: [String], default: [] },

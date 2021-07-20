@@ -1,6 +1,7 @@
 import Award from "./Award";
 import Imdb from "./Imdb";
 import Tomatoe from "./Tomatoe";
+import Comment from "./Comment";
 
 class Movie {
     _id: String = '';
@@ -12,6 +13,7 @@ class Movie {
     num_mflix_comments: Number = 0;
     title: String = '';
     fullplot: String = '';
+    languages: String[] = [];
     countries: String[] = [];
     released: Date = new Date();
     directors: String[] = [];
@@ -22,6 +24,7 @@ class Movie {
     imdb: Imdb = new Imdb();
     type: String = '';
     tomatoes: Tomatoe = new Tomatoe();
+    comments: Comment[] = []
 }
 
 export default Movie;
