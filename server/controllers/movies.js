@@ -21,7 +21,7 @@ export const getMovie = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const movie = await Movie.findById(id).populate("comments");
+        const movie = await Movie.findById(id);
         movie.comments = await Comment.find({"movie_id": new mongoose.Types.ObjectId(id)});
         res.status(200).json(movie);
     }

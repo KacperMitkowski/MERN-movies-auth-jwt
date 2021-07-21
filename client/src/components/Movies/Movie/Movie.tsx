@@ -19,7 +19,8 @@ const Movie = ({ movie }: props) => {
     const genres = movie?.genres && movie?.genres.length > 0 ? movie?.genres.join(', ') : 'Genre unknown';
     const plot = movie?.plot && movie?.plot.length > charsInPlot ? `${movie?.plot.substring(0, charsInPlot)}...` : movie?.plot === undefined ? 'No plot given' : movie?.plot;
     const image = movie?.poster ? movie?.poster?.toString() : noImage;
-    const userLoggedIn = true;
+    const profile = localStorage.getItem('profile')!;
+    const loggedUser = JSON.parse(profile);
     const userIsOwner = true;
 
     const handleDelete = (movie: MovieModel) => {
@@ -43,7 +44,7 @@ const Movie = ({ movie }: props) => {
                     <Typography component="p" variant="caption" style={{ marginTop: "10px" }}>{plot}</Typography>
                 </CardContent>
                 <CardActions>
-                    {userLoggedIn && userIsOwner &&
+                    {loggedUser && Object.keys(loggedUser).length !== 0 && userIsOwner &&
                         <>
                             <IconButton aria-label="delete" style={{ position: "absolute", left: "170px", bottom: "2px" }} onClick={() => handleDelete(movie)}>
                                 <DeleteIcon fontSize="large" color="secondary" />

@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth';
 import Details from './components/Details/Details';
+import Unauthorized from './components/Unauthorized/Unauthorized';
 
 const theme = createTheme({
   typography: {
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/movies" exact component={Home} />
             <Route path="/movies/:id" exact component={Details} />
             <Route path="/auth" exact component={Auth} />
+            <Route path="/unauthorized" exact component={Unauthorized} />
           </Switch>
         </Container>
       </ThemeProvider>

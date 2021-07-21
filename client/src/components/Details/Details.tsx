@@ -34,6 +34,7 @@ const Details = () => {
         dispatch(getMovie(id));
     }, [id]);
 
+    if (!movie) return null;
     if (isLoading) {
         return (
             <Paper elevation={6} className={classes.loadingPaper}>

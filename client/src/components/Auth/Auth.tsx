@@ -1,26 +1,47 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-
+import { signin, signup } from '../../actions/auth';
 import GoogleIcon from './GoogleIcon';
-
 import useStyles from './styles';
 import Input from './Input';
+import { AUTH, ERROR } from '../../constants/actionTypes';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { useEffect } from 'react';
+import Alert from './Alert';
+
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
 const SignUp = () => {
+  const { error } = useSelector((state: any) => state.error);
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-
   const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword(!showPassword);
+  const [showError, setShowOpen] = React.useState(false);
+
+  console.log(error);
+  useEffect(() => {
+    if (error) {
+      setShowOpen(true);
+      dispatch({ type: ERROR, data: null });
+    }
+  }, [error])
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    
+    setShowOpen(false);
+  };
 
   const switchMode = () => {
     setForm(initialState);
@@ -28,22 +49,23 @@ const SignUp = () => {
     setShowPassword(false);
   };
 
-  const handleSubmit = (e : any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     if (isSignup) {
-      // dispatch(signup(form, history));
-    } else {
-      // dispatch(signin(form, history));
+      dispatch(signup(form, history));
+    }
+    else {
+      dispatch(signin(form, history));
     }
   };
 
-  const googleSuccess = async (res : any) => {
+  const googleSuccess = async (res: any) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
 
     try {
-      // dispatch({ type: AUTH, data: { result, token } });
+      dispatch({ type: AUTH, data: { result, token } });
 
       history.push('/');
     } catch (error) {
@@ -61,26 +83,26 @@ const SignUp = () => {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">{ isSignup ? 'Sign up' : 'Sign in' }</Typography>
+        <Typography component="h1" variant="h5">{isSignup ? 'Sign up' : 'Sign in'}</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            { isSignup && (
-            <>
-              <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
-              <Input name="lastName" label="Last Name" handleChange={handleChange} half />
-            </>
+            {isSignup && (
+              <>
+                <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
+                <Input name="lastName" label="Last Name" handleChange={handleChange} half />
+              </>
             )}
             <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
-            <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
-            { isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" /> }
+            <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={() => setShowPassword(!showPassword)} />
+            {isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" />}
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-            { isSignup ? 'Sign Up' : 'Sign In' }
+          <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit}>
+            {isSignup ? 'Sign Up' : 'Sign In'}
           </Button>
           <GoogleLogin
             clientId="564033717568-bu2nr1l9h31bhk9bff4pqbenvvoju3oq.apps.googleusercontent.com"
             render={(renderProps) => (
-              <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<GoogleIcon />} variant="contained">
+              <Button className={classes.googleButton} color="secondary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<GoogleIcon />} variant="contained">
                 Google Sign In
               </Button>
             )}
@@ -90,13 +112,16 @@ const SignUp = () => {
           />
           <Grid container justify="flex-end">
             <Grid item>
-              <Button onClick={switchMode}>
-                { isSignup ? 'Already have an account? Sign in' : "Don't have an account? Sign Up" }
+              <Button onClick={switchMode} color="secondary">
+                {isSignup ? 'Already have an account? Sign in' : "Don't have an account? Sign Up"}
               </Button>
             </Grid>
           </Grid>
         </form>
       </Paper>
+      <Snackbar open={showError} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" className={classes.alert}>Invalid Credentials </Alert>
+      </Snackbar>
     </Container>
   );
 };
