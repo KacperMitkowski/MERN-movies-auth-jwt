@@ -11,12 +11,11 @@ const Input = ({ name, handleChange, label, half, autoFocus, type, handleShowPas
       name={name}
       onChange={handleChange}
       variant="outlined"
-      required
       fullWidth
       label={label}
       autoFocus={autoFocus}
       type={type}
-      InputProps={name === 'password' ? {
+      InputProps={name === 'password' || name === 'confirmPassword' ? {
         endAdornment: (
           <InputAdornment position="end">
             <IconButton onClick={handleShowPassword}>

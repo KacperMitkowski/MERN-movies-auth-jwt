@@ -28,6 +28,6 @@ export default makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   alert: {
-    backgroundColor: '#f50057'
+    backgroundColor: '#f50057',
   }
 }));

@@ -31,8 +31,6 @@ const Movie = ({ movie }: props) => {
         alert("EDIT");
     }
 
-    console.log(movie);
-
     return (
         <Grid item xs={12} md={6} lg={3}>
             <Card className={classes.root} raised>

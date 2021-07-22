@@ -17,12 +17,14 @@ API.interceptors.response.use(response => {
    if (error.response.status === 401) {
         window.location.assign('/unauthorized');
    }
-   else if(error.response.status === 400) {
-       alert("WRONG LOGIN OR PASSWORD");
+   else if(error.response.status === 500) {
+       alert("Server error");
    }
    return error;
  });
+ 
 
+export const fetchAllMovies = () => API.get('/movies/all');
 export const fetchMovies = (page: number) => API.get(`/movies?page=${page}`);
 export const fetchMovie = (id: any) => API.get(`/movies/${id}`);
 export const signIn = (formData: any) => API.post('/user/signin', formData);

@@ -5,9 +5,10 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createTheme } from '@material-ui/core/styles';
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home/Home';
-import Auth from './components/Auth/Auth';
+import LoginUser from './components/Auth/LoginUser';
 import Details from './components/Details/Details';
 import Unauthorized from './components/Unauthorized/Unauthorized';
+import RegisterUser from './components/Auth/RegisterUser';
 
 const theme = createTheme({
   typography: {
@@ -28,7 +29,8 @@ const App = () => {
             <Route path="/" exact component={() => <Redirect to="/movies?page=1" />} />
             <Route path="/movies" exact component={Home} />
             <Route path="/movies/:id" exact component={Details} />
-            <Route path="/auth" exact component={Auth} />
+            <Route path="/loginUser" exact component={LoginUser} />
+            <Route path="/register" exact component={RegisterUser} />
             <Route path="/unauthorized" exact component={Unauthorized} />
           </Switch>
         </Container>

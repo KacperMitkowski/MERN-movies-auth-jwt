@@ -13,7 +13,7 @@ const Navbar = () => {
     const classes = useStyles();
     const history = useHistory();
     const location = useLocation();
-    const handleLogin = () => history.push('/auth');
+    const handleLogin = () => history.push('/loginUser');
     const profile = localStorage.getItem('profile')!;
     const [user, setUser] = useState(JSON.parse(profile));
     const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const Navbar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="secondary">
+            <AppBar position="sticky" color="secondary" >
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <Menu />

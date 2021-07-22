@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Grid, CircularProgress, Grow, Paper } from '@material-ui/core';
+import { Grid, CircularProgress, Grow, Paper, Button } from '@material-ui/core';
 import MovieModel from '../../models/Movie';
 import Movie from './Movie/Movie';
 import useStyles from './styles';
