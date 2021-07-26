@@ -4,16 +4,21 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 export default makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1,
+
     },
-    loadingPaper: {
+    paper: {
+      marginTop: theme.spacing(8),
       display: 'flex',
-      justifyContent: 'center',
+      flexDirection: 'column',
       alignItems: 'center',
-      padding: '20px',
-      borderRadius: '4px',
-      height: '75vh',
-      width: '100%'
-  },
+      padding: theme.spacing(2),
+    },
+    icon: {
+      margin: theme.spacing(1),
+    },
+
+    alert: {
+      backgroundColor: '#f50057',
+    }
   }),
 );

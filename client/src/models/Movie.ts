@@ -24,7 +24,8 @@ class Movie {
     imdb: Imdb = new Imdb();
     type: String = '';
     tomatoes: Tomatoe = new Tomatoe();
-    comments: Comment[] = []
+    comments: Comment[] = [];
+    userId: String = '';
 }
 
 export default Movie;

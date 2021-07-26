@@ -11,7 +11,7 @@ import Input from './Input';
 import { AUTH, ERROR } from '../../constants/actionTypes';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useEffect } from 'react';
-import Alert from './Alert';
+import Alert from '../Helpers/Alert';
 
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };

@@ -5,7 +5,6 @@ export default makeStyles((theme: Theme) =>
     createStyles({
         root: {
             flexGrow: 1,
-            marginBottom: '20px'
         },
         menuButton: {
             marginRight: theme.spacing(2),

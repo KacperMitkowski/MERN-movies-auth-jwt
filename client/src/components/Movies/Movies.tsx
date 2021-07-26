@@ -4,19 +4,25 @@ import { Grid, CircularProgress, Grow, Paper, Button } from '@material-ui/core';
 import MovieModel from '../../models/Movie';
 import Movie from './Movie/Movie';
 import useStyles from './styles';
+import { Alert } from '@material-ui/lab';
 
 
 const Movies = () => {
     const { movies, isLoading } = useSelector((state: any) => state.movies);
     const classes = useStyles();
 
-    if (!movies.length && !isLoading) return <>'No movies'</>;
+    if (!movies.length && !isLoading) return (
+        <Grid container spacing={3}>
+            <Alert severity="error" style={{ width: "100%" }}>No movies found</Alert>
+        </Grid>)
 
     return (
         isLoading ?
-            <Paper elevation={6} className={classes.loadingPaper}>
-                <CircularProgress size="7em" color="secondary" value={100} />
-            </Paper>
+            <Grid container spacing={3}>
+                <Paper elevation={6} className={classes.loadingPaper}>
+                    <CircularProgress size="7em" color="secondary" value={100} />
+                </Paper>
+            </Grid>
             :
             <Grow in={true} timeout={{ enter: 1500 }}>
                 <Grid container spacing={3}>
@@ -25,7 +31,6 @@ const Movies = () => {
                     ))}
                 </Grid>
             </Grow>
-
     )
 }
 

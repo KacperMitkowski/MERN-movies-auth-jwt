@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Grid, Card, CardContent, CardActions, Typography, CardMedia, IconButton } from '@material-ui/core';
 import useStyles from './styles';
 import MovieModel from '../../../models/Movie';
@@ -11,7 +11,7 @@ interface props {
     movie: MovieModel,
 }
 
-const Movie = ({ movie }: props) => {
+const Movie = ({ movie }: props) => {    
     const classes = useStyles();
     const history = useHistory();
     const charsInPlot = 200;
@@ -21,14 +21,13 @@ const Movie = ({ movie }: props) => {
     const image = movie?.poster ? movie?.poster?.toString() : noImage;
     const profile = localStorage.getItem('profile')!;
     const loggedUser = JSON.parse(profile);
-    const userIsOwner = true;
 
     const handleDelete = (movie: MovieModel) => {
         alert("DELETE");
     }
 
     const handleEdit = (movie: MovieModel) => {
-        alert("EDIT");
+        return history.push(`/editMovie/${movie._id}`);
     }
 
     return (
@@ -42,7 +41,7 @@ const Movie = ({ movie }: props) => {
                     <Typography component="p" variant="caption" style={{ marginTop: "10px" }}>{plot}</Typography>
                 </CardContent>
                 <CardActions>
-                    {loggedUser && Object.keys(loggedUser).length !== 0 && userIsOwner &&
+                    {loggedUser && Object.keys(loggedUser).length !== 0 && loggedUser?.result?._id === movie?.userId &&
                         <>
                             <IconButton aria-label="delete" style={{ position: "absolute", left: "170px", bottom: "2px" }} onClick={() => handleDelete(movie)}>
                                 <DeleteIcon fontSize="large" color="secondary" />

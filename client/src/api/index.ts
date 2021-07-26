@@ -21,11 +21,15 @@ API.interceptors.response.use(response => {
        alert("Server error");
    }
    return error;
+   
  });
  
 
-export const fetchAllMovies = () => API.get('/movies/all');
 export const fetchMovies = (page: number) => API.get(`/movies?page=${page}`);
 export const fetchMovie = (id: any) => API.get(`/movies/${id}`);
+export const fetchMoviesBySearch = (searchQuery) => API.get(`/movies/search?searchQuery=${searchQuery.search || 'none'}&genres=${searchQuery.genres}`);
+export const createMovie = (movie: any) => API.post('/movies', movie);
+export const updateMovie = (id, updatedMovie) => API.patch(`/movies/${id}`, updatedMovie);
+
 export const signIn = (formData: any) => API.post('/user/signin', formData);
 export const signUp = (formData: any) => API.post('/user/signup', formData);

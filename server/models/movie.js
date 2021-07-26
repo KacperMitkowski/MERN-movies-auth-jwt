@@ -17,14 +17,16 @@ const movieSchema = mongoose.Schema({
     countries: { type: [String], default: [] },
     released: { type: Date, default: new Date() },
     directors: { type: [String], default: [] },
+    writers: { type: [String], default: [] },
     rated: { type: String },
     awards: { type: Award.schema },
-    lastUpdated: { type: Date, default: new Date() },
+    lastupdated: { type: Date, default: new Date() },
     year: { type: Number },
     imdb: { type: Imdb.schema },
     type: { type: String },
     tomatoes: { type: Tomatoe.schema },
-    comments: [Comment.schema]
+    comments: [Comment.schema],
+    userId: {type: String}
 });
 
 const Movie = mongoose.model('movie', movieSchema);

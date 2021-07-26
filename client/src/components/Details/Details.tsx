@@ -3,7 +3,7 @@ import { CircularProgress, Paper, Grow, Grid, Container, Card, CardContent, Typo
 import Rating from '@material-ui/lab/Rating';
 import { useDispatch, useSelector } from 'react-redux';
 import { a11yProps } from './TabPanel';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { getMovie } from '../../actions/movies';
 import moment from 'moment';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
@@ -20,6 +20,9 @@ const Details = () => {
     const { movie, isLoading } = useSelector((state: any) => state.movies);
     const { id } = useParams<any>();
     const commentsRef = useRef<any>();
+    const history = useHistory();
+    const profile = localStorage.getItem('profile')!;
+    const loggedUser = JSON.parse(profile);
     const directors = movie?.directors && movie.directors.length > 0 ? movie.directors.join(', ') : 'Director unknown';
     const writers = movie?.writers && movie.writers.length > 0 ? movie.writers.join(', ') : 'Writer unknown';
     const genres = movie?.genres && movie?.genres.length > 0 ? movie?.genres.join(', ') : 'Genre unknown';
@@ -63,6 +66,11 @@ const Details = () => {
                     <Typography className={classes.votes}>{movie?.imdb?.votes} <br />votes</Typography>
                 </div>
                 <Typography>{movie?.plot}</Typography>
+                {loggedUser?.result?._id === movie?.userId &&
+                    <div style={{display: "flex", justifyContent: "flex-end", marginTop: "10px"}}>
+                        <Button color="secondary" variant="outlined" onClick={() => history.push(`/editMovie/${movie?._id}`)} >EDIT</Button>
+                    </div>
+                }
                 <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
                 <Accordion classes={{ expanded: classes.accordionActive }} className={classes.accordionHover}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -131,8 +139,8 @@ const Details = () => {
                             <Tab label="Nominations" icon={<EventNoteIcon />} {...a11yProps(0)} style={{width: '50%'}} />
                             <Tab label="Wins" icon={<FavoriteIcon />} {...a11yProps(1)} style={{width: '50%'}} />
                         </Tabs>
-                        <TabPanel value={value} index={0}>{movie?.awards?.text}</TabPanel>
-                        <TabPanel value={value} index={1}>{movie?.awards?.wins} wins</TabPanel>
+                        <TabPanel value={value} index={0}>nominations: 0</TabPanel>
+                        <TabPanel value={value} index={1}>{movie?.awards?.text}</TabPanel>
                     </AccordionDetails>
                 </Accordion>
             </CardContent>

@@ -1,5 +1,5 @@
 import { Avatar, Button, Container, Grid, Paper, Snackbar, Typography } from '@material-ui/core';
-import Alert from './Alert';
+import Alert from '../Helpers/Alert';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -19,7 +19,7 @@ const RegisterUser = () => {
     const history = useHistory();
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
-    const [showError, setShowError] = React.useState(false);
+    const [showError, setShowError] = useState(false);
 
 
     useEffect(() => {

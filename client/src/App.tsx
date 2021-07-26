@@ -9,6 +9,8 @@ import LoginUser from './components/Auth/LoginUser';
 import Details from './components/Details/Details';
 import Unauthorized from './components/Unauthorized/Unauthorized';
 import RegisterUser from './components/Auth/RegisterUser';
+import AddMovie from './components/AddMovie/AddMovie';
+import EditMovie from './components/EditMovie/EditMovie';
 
 const theme = createTheme({
   typography: {
@@ -26,11 +28,14 @@ const App = () => {
         <Container maxWidth="xl">
           <Navbar />
           <Switch>
-            <Route path="/" exact component={() => <Redirect to="/movies?page=1" />} />
+            <Route path="/" exact component={() => <Redirect to="/movies" />} />
             <Route path="/movies" exact component={Home} />
+            <Route path="/movies/search" exact component={Home} />
             <Route path="/movies/:id" exact component={Details} />
             <Route path="/loginUser" exact component={LoginUser} />
             <Route path="/register" exact component={RegisterUser} />
+            <Route path="/addMovie" exact component={AddMovie} />
+            <Route path="/editMovie/:id" exact component={EditMovie} />
             <Route path="/unauthorized" exact component={Unauthorized} />
           </Switch>
         </Container>
