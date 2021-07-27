@@ -99,6 +99,8 @@ const EditMovie = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
+
+        
         if (title.trim().length === 0) {
             return dispatch({ type: ERROR, data: { error: "No title given" } });
         }
@@ -135,28 +137,8 @@ const EditMovie = () => {
         else if (type.trim().length === 0) {
             return dispatch({ type: ERROR, data: { error: "No type given" } });
         }
-        else if (!awards) {
-            return dispatch({ type: ERROR, data: { error: "No awards given" } });
-        }
-        
-        dispatch(updateMovie({
-            movieId,
-            title,
-            year,
-            releasedDate,
-            selectedLanguages,
-            selectedActors,
-            selectedGenres,
-            selectedCountries,
-            fullPlot,
-            selectedDirectors,
-            selectedWriters,
-            runtime,
-            type,
-            awards,
-            file,
-            userId
-        }, history));
+
+        dispatch(updateMovie({ movieId, title, year, releasedDate, selectedLanguages, selectedActors, selectedGenres, selectedCountries, fullPlot, selectedDirectors, selectedWriters, runtime, type, awards, file, userId }, history));
     }
 
     const getDatesToSelect = () => {
@@ -177,7 +159,6 @@ const EditMovie = () => {
             </Paper>
         );
     }
-
 
     return (
         <Container component="main" maxWidth="md">

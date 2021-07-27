@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { CircularProgress, Paper, Grow, Grid, Container, Card, CardContent, Typography, CardMedia, Divider, TextField, Button, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab } from '@material-ui/core';
+import React, { useEffect, useRef, useState } from 'react';
+import { CircularProgress, Paper, Grow, Grid, Container, Card, CardContent, Typography, CardMedia, Divider, TextField, Button, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Snackbar } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import { useDispatch, useSelector } from 'react-redux';
 import { a11yProps } from './TabPanel';
 import { useHistory, useParams } from 'react-router-dom';
-import { getMovie } from '../../actions/movies';
+import { deleteMovie, getMovie } from '../../actions/movies';
 import moment from 'moment';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import Comment from '../../models/Comment';
@@ -13,6 +13,8 @@ import useStyles from './styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import TabPanel from './TabPanel';
 import EventNoteIcon from '@material-ui/icons/EventNote';
+import Alert from '../Helpers/Alert';
+import { UPDATE_SUCCESSFUL } from '../../constants/actionTypes';
 
 const Details = () => {
     const classes = useStyles();
@@ -29,9 +31,15 @@ const Details = () => {
     const languages = movie?.languages && movie?.languages.length > 0 ? movie?.languages.join(', ') : 'Language unknown';
     const cast = movie?.cast && movie?.cast.length > 0 ? movie?.cast : 'Cast unknown';
     const releaseDate = new Date(movie?.released)?.toLocaleDateString();
-    const [value, setValue] = React.useState(0);
-    const handleAwardChange = (event: React.ChangeEvent<{}>, newValue: number) => setValue(newValue);
+    const [value, setValue] = useState(0);
+    const { updateSuccessful } = useSelector((state: any) => state.movies);
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
     
+    useEffect(() => {
+        if (updateSuccessful) {
+            setShowEditSuccess(true);
+        }
+    }, [updateSuccessful]);
 
     useEffect(() => {
         dispatch(getMovie(id));
@@ -44,6 +52,15 @@ const Details = () => {
                 <CircularProgress size="7em" color="secondary" />
             </Paper>
         );
+    }
+
+    const handleCloseEditSuccess = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        dispatch({ type: UPDATE_SUCCESSFUL, payload: false });
+        setShowEditSuccess(false);
     }
 
     const poster =
@@ -66,8 +83,9 @@ const Details = () => {
                     <Typography className={classes.votes}>{movie?.imdb?.votes} <br />votes</Typography>
                 </div>
                 <Typography>{movie?.plot}</Typography>
-                {loggedUser?.result?._id === movie?.userId &&
-                    <div style={{display: "flex", justifyContent: "flex-end", marginTop: "10px"}}>
+                {loggedUser && Object.keys(loggedUser).length !== 0 && loggedUser?.result?._id === movie?.userId  &&
+                    <div style={{display: "flex", marginTop: '10px', justifyContent: 'space-between'}}>
+                        <Button color="secondary" variant="outlined" onClick={() => dispatch(deleteMovie(movie._id, history))} >DELETE</Button>
                         <Button color="secondary" variant="outlined" onClick={() => history.push(`/editMovie/${movie?._id}`)} >EDIT</Button>
                     </div>
                 }
@@ -135,7 +153,7 @@ const Details = () => {
                         <Typography><strong>Awards:</strong></Typography>
                     </AccordionSummary>
                     <AccordionDetails style={{ display: 'block' }}>
-                        <Tabs value={value} indicatorColor="secondary" textColor="secondary" onChange={handleAwardChange} centered>
+                        <Tabs value={value} indicatorColor="secondary" textColor="secondary" onChange={(event: React.ChangeEvent<{}>, newValue: number) => setValue(newValue)} centered>
                             <Tab label="Nominations" icon={<EventNoteIcon />} {...a11yProps(0)} style={{width: '50%'}} />
                             <Tab label="Wins" icon={<FavoriteIcon />} {...a11yProps(1)} style={{width: '50%'}} />
                         </Tabs>
@@ -177,7 +195,6 @@ const Details = () => {
             <div>Last updated: {moment(movie?.lastUpdated).fromNow()}</div>
         </div>
 
-    console.log(movie);
     return (
         <Container>
             {lastActionDiv}
@@ -188,6 +205,10 @@ const Details = () => {
                     <Grid item xs={12} sm={3}>{comments}</Grid>
                 </Grid>
             </Grow>
+            
+            <Snackbar open={showEditSuccess} autoHideDuration={6000} onClose={handleCloseEditSuccess}>
+                <Alert onClose={handleCloseEditSuccess} severity="success">Edit successful</Alert>
+            </Snackbar>
         </Container>
     )
 }

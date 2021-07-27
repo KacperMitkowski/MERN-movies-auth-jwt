@@ -19,6 +19,15 @@ export default makeStyles((theme: Theme) =>
 
     alert: {
       backgroundColor: '#f50057',
-    }
+    },
+    loadingPaper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
+      borderRadius: '15px',
+      height: '39vh',
+      marginTop: '1rem'
+  },
   }),
 );

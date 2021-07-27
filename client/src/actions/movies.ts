@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE, CREATE, ERROR, FETCH_BY_SEARCH, UPDATE, UPDATE_SUCCESS } from '../constants/actionTypes';
+import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE, CREATE, ERROR, FETCH_BY_SEARCH, UPDATE, DELETE, DELETE_SUCCESSFUL, UPDATE_SUCCESSFUL } from '../constants/actionTypes';
 
 export const getMovies = (page: number) => async (dispatch: any) => {
   try {
@@ -48,6 +48,7 @@ export const createMovie = (movie, history) => async (dispatch) => {
       return history.push('/addMovie');
     }
 
+    dispatch({ type: END_LOADING });
     dispatch({ type: CREATE, payload: data });
     history.push(`/movies/${data._id}`);
   } catch (error) {
@@ -57,6 +58,7 @@ export const createMovie = (movie, history) => async (dispatch) => {
 
 export const updateMovie = (movie, history) => async (dispatch: any) => {
   try {
+    dispatch({ type: START_LOADING });
     const { data } = await api.updateMovie(movie.movieId, movie);
 
     if (data?.error) {
@@ -65,8 +67,24 @@ export const updateMovie = (movie, history) => async (dispatch: any) => {
     }
 
     dispatch({ type: UPDATE, payload: data });
+    dispatch({ type: UPDATE_SUCCESSFUL, payload: true});
+    dispatch({ type: END_LOADING });
     return history.push(`/movies/${data._id}`);
   } catch (error) {
     console.log(error);
   }
 }
+
+export const deleteMovie = (id, history) => async (dispatch : any) => {
+  try {
+    dispatch({ type: START_LOADING });
+    await api.deleteMovie(id);
+
+    dispatch({ type: DELETE, payload: id });
+    dispatch({ type: DELETE_SUCCESSFUL, payload: true});
+    dispatch({ type: END_LOADING });
+    return history.push(`/movies`); 
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
-import { Container } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Container, Snackbar } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
 import Movies from '../Movies/Movies';
 import Paginate from '../Pagination/Paginate';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getMovies } from '../../actions/movies';
 import SearcherAddMovieBar from '../SearcherAddMovieBar/SearcherAddMovieBar';
-
+import Alert from '../Helpers/Alert';
+import { DELETE_SUCCESSFUL } from '../../constants/actionTypes';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -16,6 +17,8 @@ const Home = () => {
     const query = useQuery();
     const page = query.get('page') || 1;
     const dispatch = useDispatch();
+    const { deleteSuccessful } = useSelector((state: any) => state.movies);
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const searchQuery = query.get('searchQuery');
 
     useEffect(() => {
@@ -24,12 +27,31 @@ const Home = () => {
         }
     }, [dispatch, page]);
 
+    useEffect(() => {
+        if (deleteSuccessful) {
+            setShowDeleteSuccess(deleteSuccessful);
+        }
+    }, [deleteSuccessful]);
+
+    const handleCloseDeleteSuccess = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        dispatch({ type: DELETE_SUCCESSFUL, payload: false });
+        setShowDeleteSuccess(false);
+    }
+
     return (
         <Container maxWidth="lg">
             <SearcherAddMovieBar />
             {!searchQuery && <Paginate page={page} />}
             <Movies />
             {!searchQuery && <Paginate page={page} />}
+
+            <Snackbar open={showDeleteSuccess} autoHideDuration={6000} onClose={handleCloseDeleteSuccess}>
+                <Alert onClose={handleCloseDeleteSuccess} severity="success">Delete successful</Alert>
+            </Snackbar>
         </Container>
     )
 }

@@ -6,6 +6,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import noImage from '../../../images/no-image.png';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { deleteMovie } from '../../../actions/movies';
 
 interface props {
     movie: MovieModel,
@@ -14,6 +16,7 @@ interface props {
 const Movie = ({ movie }: props) => {    
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
     const charsInPlot = 200;
     const directors = movie?.directors && movie.directors.length > 0 ? movie.directors.join(', ') : 'Director unknown';
     const genres = movie?.genres && movie?.genres.length > 0 ? movie?.genres.join(', ') : 'Genre unknown';
@@ -21,14 +24,6 @@ const Movie = ({ movie }: props) => {
     const image = movie?.poster ? movie?.poster?.toString() : noImage;
     const profile = localStorage.getItem('profile')!;
     const loggedUser = JSON.parse(profile);
-
-    const handleDelete = (movie: MovieModel) => {
-        alert("DELETE");
-    }
-
-    const handleEdit = (movie: MovieModel) => {
-        return history.push(`/editMovie/${movie._id}`);
-    }
 
     return (
         <Grid item xs={12} md={6} lg={3}>
@@ -43,10 +38,10 @@ const Movie = ({ movie }: props) => {
                 <CardActions>
                     {loggedUser && Object.keys(loggedUser).length !== 0 && loggedUser?.result?._id === movie?.userId &&
                         <>
-                            <IconButton aria-label="delete" style={{ position: "absolute", left: "170px", bottom: "2px" }} onClick={() => handleDelete(movie)}>
+                            <IconButton aria-label="delete" style={{ position: "absolute", left: "170px", bottom: "2px" }} onClick={() => dispatch(deleteMovie(movie._id, history))}>
                                 <DeleteIcon fontSize="large" color="secondary" />
                             </IconButton>
-                            <IconButton aria-label="edit" style={{ position: "absolute", left: "220px", bottom: "2px" }} onClick={() => handleEdit(movie)}>
+                            <IconButton aria-label="edit" style={{ position: "absolute", left: "220px", bottom: "2px" }} onClick={() => history.push(`/editMovie/${movie._id}`)}>
                                 <EditRoundedIcon fontSize="large" color="secondary" />
                             </IconButton>
                         </>

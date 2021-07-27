@@ -100,8 +100,6 @@ export const updateMovie = async (req, res) => {
     const { id } = req.params;
     const { title, year, releasedDate, selectedLanguages, selectedActors, selectedGenres, selectedCountries, fullPlot, selectedDirectors, selectedWriters, runtime, type, awards, file, userId } = req.body;
 
-    console.log(req.body);
-
     try {
         if (title?.trim()?.length === 0) return res.status(200).json({ error: "No title given" });
         if (fullPlot?.trim()?.length === 0) return res.status(200).json({ error: "No plot given" });
@@ -137,6 +135,21 @@ export const updateMovie = async (req, res) => {
         res.status(201).json(updatedMovie);
     }
     catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+}
+
+export const deleteMovie = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No movie with id: ${id}`);
+    
+        await Movie.findByIdAndRemove(id);
+    
+        res.status(201).json({ message: "Movie deleted successfully." });
+    }
+    catch(error) {
         res.status(409).json({ message: error.message });
     }
 }

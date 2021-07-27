@@ -1,4 +1,4 @@
-import { Button, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Snackbar, TextField, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Snackbar, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone';
 import useStyles from './styles';
@@ -15,11 +15,12 @@ import { actors, countries, directors, genres, languages, writers } from '../../
 
 const AddMovie = () => {
     const classes = useStyles();
-    const { error } = useSelector((state: any) => state.error);
-    const dispatch = useDispatch();
     const history = useHistory();
-    const [showError, setShowError] = useState(false);
+    const dispatch = useDispatch();
     const profile = JSON.parse(localStorage.getItem('profile')!);
+    const { error } = useSelector((state: any) => state.error);
+    const { isLoading } = useSelector((state: any) => state.movies);
+    const [showError, setShowError] = useState(false);
     const [userId, setUserId] = useState(profile?.result?._id);
 
     const [title, setTitle] = useState('');
@@ -98,27 +99,8 @@ const AddMovie = () => {
         else if (type.trim().length === 0) {
             return dispatch({ type: ERROR, data: { error: "No type given" } });
         }
-        else if (!awards) {
-            return dispatch({ type: ERROR, data: { error: "No awards given" } });
-        }
 
-        dispatch(createMovie({
-            title,
-            year,
-            releasedDate,
-            selectedLanguages,
-            selectedActors,
-            selectedGenres,
-            selectedCountries,
-            fullPlot,
-            selectedDirectors,
-            selectedWriters,
-            runtime,
-            type,
-            awards,
-            file,
-            userId
-        }, history));
+        dispatch(createMovie({ title, year, releasedDate, selectedLanguages, selectedActors, selectedGenres, selectedCountries, fullPlot, selectedDirectors, selectedWriters, runtime, type, awards, file, userId }, history));
         handleClear();
     }
 
@@ -140,6 +122,14 @@ const AddMovie = () => {
             items.push(<MenuItem key={i} value={i}>{i}</MenuItem>);
         }
         return items;
+    }
+
+    if (isLoading) {
+        return (
+            <Paper elevation={6} className={classes.loadingPaper}>
+                <CircularProgress size="7em" color="secondary" />
+            </Paper>
+        );
     }
 
     return (
