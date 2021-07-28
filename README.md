@@ -21,11 +21,11 @@ This is a project for practice either backend or frontend skills. The data for t
 3. prepare .env file in the root of the server folder
 4. paste CONNECTION_URL to mongoDB and JWT_SECRET for JWT authentication to .env file
 5. For getting data from MongoDB you must first:
-    -> register and login to mongodb.com
-    -> create new project 
-    -> create new database user
-    -> add IP address (your local or 0.0.0.0/0)
-    -> copy connection string and put it to .env file (e.g. CONNECTION_URL = "<YOUR_CONNECTION_STRING>")
+    * register and login to mongodb.com
+    * create new project 
+    * create new database user
+    * add IP address (your local or 0.0.0.0/0)
+    * copy connection string and put it to .env file (e.g. CONNECTION_URL = "<YOUR_CONNECTION_STRING>")
  6. Prepare secret key for JWT and put it to .env (e.g. JWT_SECRET = "YOUR_SECRET")
 
 ## Plans:
