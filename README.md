@@ -8,7 +8,7 @@ This is a project for practice either backend or frontend skills. The data for t
 * frontend: 
   * React, Redux/Redux-Thunk 
   * Typescript
-  * MaterialUI
+  * MaterialsUI
   * axios, JWT
 * backend:
   * Node, Express.js
@@ -26,7 +26,7 @@ This is a project for practice either backend or frontend skills. The data for t
     * create new database user
     * add IP address (your local or 0.0.0.0/0)
     * copy connection string and put it to .env file (e.g. CONNECTION_URL = "<YOUR_CONNECTION_STRING>")
- 6. Prepare secret key for JWT and put it to .env (e.g. JWT_SECRET = "YOUR_SECRET")
+ 6. Prepare secret key for JWT and put it to .env (e.g. JWT_SECRET = "<YOUR_SECRET>")
 
 ## Plans:
 * Adding login functionality for admin who has CRUD interface for users
