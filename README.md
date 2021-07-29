@@ -1,5 +1,5 @@
 ## What is MERN-Movies-with-Auth-JWT?
-This is application about movies. You can get information about movies and their comments. there is CRUD interface for logged user. There are register and login mechanisms and JWT authentication.
+This is application about movies. You can get information about movies and their comments. there is CRUD interface for logged user. There are register and login mechanisms and JWT authentication. App is responsive and implements RWD.
 
 ## About project:
 This is a project for practice either backend or frontend skills. The data for this project comes from dummy database from mongodb.com
@@ -8,7 +8,7 @@ This is a project for practice either backend or frontend skills. The data for t
 * frontend: 
   * React, Redux/Redux-Thunk 
   * Typescript
-  * MaterialsUI
+  * MaterialUI
   * axios, JWT
 * backend:
   * Node, Express.js
