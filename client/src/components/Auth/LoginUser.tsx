@@ -63,7 +63,7 @@ const LoginUser = () => {
   const handleChange = (e: any) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" style={{marginTop: "80px"}}>
       <Paper className={classes.paper} elevation={6}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

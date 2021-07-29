@@ -32,5 +32,8 @@ export const createMovie = (movie) => API.post('/movies', movie);
 export const updateMovie = (id, updatedMovie) => API.patch(`/movies/${id}`, updatedMovie);
 export const deleteMovie = (id) => API.delete(`/movies/${id}`);
 
+export const fetchComments = (movieId) => API.get(`/comments/${movieId}`);
+export const comment = (value, movieId) => API.post(`/comments/${movieId}/commentMovie`, { value });
+
 export const signIn = (formData: any) => API.post('/user/signin', formData);
 export const signUp = (formData: any) => API.post('/user/signup', formData);

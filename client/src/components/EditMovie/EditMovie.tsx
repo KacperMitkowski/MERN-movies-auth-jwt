@@ -100,7 +100,7 @@ const EditMovie = () => {
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        
+
         if (title.trim().length === 0) {
             return dispatch({ type: ERROR, data: { error: "No title given" } });
         }
@@ -154,14 +154,14 @@ const EditMovie = () => {
 
     if (isLoading) {
         return (
-            <Paper elevation={6} className={classes.loadingPaper}>
+            <Paper elevation={6} className={classes.loadingPaper} style={{marginTop: "80px"}}>
                 <CircularProgress size="7em" color="secondary" />
             </Paper>
         );
     }
 
     return (
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="md" style={{ marginTop: "80px" }}>
             <Paper className={classes.paper} elevation={6}>
                 <Typography component="h1" variant="h5">Edit Movie</Typography>
                 <EditIcon fontSize="large" color="secondary" className={classes.icon} />

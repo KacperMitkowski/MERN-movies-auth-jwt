@@ -1,4 +1,3 @@
-import Comment from '../models/comment.js';
 import Movie from '../models/movie.js';
 import mongoose from 'mongoose';
 import Award from '../models/award.js';
@@ -25,7 +24,6 @@ export const getMovie = async (req, res) => {
 
     try {
         const movie = await Movie.findById(id);
-        movie.comments = await Comment.find({ "movie_id": new mongoose.Types.ObjectId(id) });
         res.status(200).json(movie);
     }
     catch (error) {
@@ -108,7 +106,7 @@ export const updateMovie = async (req, res) => {
 
         const newAwards = new Award({ wins: awards, nomination: 0, text: `${awards} win.` });
         const newImdb = new Imdb({ rating: 0, votes: 0, id: Math.random() })
-        const updatedMovie = { 
+        const updatedMovie = {
             plot: fullPlot.substring(0, 100),
             genres: selectedGenres,
             runtime: runtime,
@@ -144,12 +142,13 @@ export const deleteMovie = async (req, res) => {
 
     try {
         if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No movie with id: ${id}`);
-    
+
         await Movie.findByIdAndRemove(id);
-    
+
         res.status(201).json({ message: "Movie deleted successfully." });
     }
-    catch(error) {
+    catch (error) {
         res.status(409).json({ message: error.message });
     }
 }
+

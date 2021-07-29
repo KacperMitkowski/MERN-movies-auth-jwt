@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { a11yProps } from './TabPanel';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteMovie, getMovie } from '../../actions/movies';
+import { commentMovie } from '../../actions/comments';
+import { getComments } from '../../actions/comments';
 import moment from 'moment';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import Comment from '../../models/Comment';
@@ -19,10 +21,13 @@ import { UPDATE_SUCCESSFUL } from '../../constants/actionTypes';
 const Details = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { movie, isLoading } = useSelector((state: any) => state.movies);
-    const { id } = useParams<any>();
     const commentsRef = useRef<any>();
     const history = useHistory();
+    
+    const { movie, isLoading } = useSelector((state: any) => state.movies);
+    const { updateSuccessful } = useSelector((state: any) => state.movies);
+    const { comments } = useSelector((state: any) => state.comments);
+    const { id } = useParams<any>();
     const profile = localStorage.getItem('profile')!;
     const loggedUser = JSON.parse(profile);
     const directors = movie?.directors && movie.directors.length > 0 ? movie.directors.join(', ') : 'Director unknown';
@@ -31,10 +36,12 @@ const Details = () => {
     const languages = movie?.languages && movie?.languages.length > 0 ? movie?.languages.join(', ') : 'Language unknown';
     const cast = movie?.cast && movie?.cast.length > 0 ? movie?.cast : 'Cast unknown';
     const releaseDate = new Date(movie?.released)?.toLocaleDateString();
-    const [value, setValue] = useState(0);
-    const { updateSuccessful } = useSelector((state: any) => state.movies);
-    const [showEditSuccess, setShowEditSuccess] = useState(false);
     
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
+    const [value, setValue] = useState(0);
+    const [comment, setComment] = useState('');
+    const [movieComments, setMovieComments] = useState(comments);
+
     useEffect(() => {
         if (updateSuccessful) {
             setShowEditSuccess(true);
@@ -42,16 +49,34 @@ const Details = () => {
     }, [updateSuccessful]);
 
     useEffect(() => {
-        dispatch(getMovie(id));
+        const getData = async () => {
+            await dispatch(getMovie(id));
+            const comments = await dispatch(getComments(id));
+            setMovieComments(comments);
+        }
+        getData();
     }, [id]);
+    
 
     if (!movie) return null;
     if (isLoading) {
         return (
-            <Paper elevation={6} className={classes.loadingPaper}>
+            <Paper elevation={6} className={classes.loadingPaper} style={{marginTop: "80px"}}>
                 <CircularProgress size="7em" color="secondary" />
             </Paper>
         );
+    }
+
+    const handleComment = async () => {
+        const name = loggedUser?.result?.name;
+        const email = loggedUser?.result?.email;
+        const movieId = movie?._id;
+
+        const newComments = await dispatch(commentMovie(`${name}:${comment}:${email}`, movieId));
+
+        setComment('');
+        setMovieComments(newComments);
+        commentsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     const handleCloseEditSuccess = (event?: React.SyntheticEvent, reason?: string) => {
@@ -63,7 +88,7 @@ const Details = () => {
         setShowEditSuccess(false);
     }
 
-    const poster =
+    const posterSection =
         <Card raised>
             <CardContent style={{ padding: '0' }}>
                 {movie?.poster ?
@@ -73,7 +98,7 @@ const Details = () => {
             </CardContent>
         </Card>
 
-    const content =
+    const contentSection =
         <Card raised>
             <CardContent>
                 <Typography variant="h4" align="center">{movie?.title}</Typography>
@@ -83,8 +108,8 @@ const Details = () => {
                     <Typography className={classes.votes}>{movie?.imdb?.votes} <br />votes</Typography>
                 </div>
                 <Typography>{movie?.plot}</Typography>
-                {loggedUser && Object.keys(loggedUser).length !== 0 && loggedUser?.result?._id === movie?.userId  &&
-                    <div style={{display: "flex", marginTop: '10px', justifyContent: 'space-between'}}>
+                {loggedUser && Object.keys(loggedUser).length !== 0 && loggedUser?.result?._id === movie?.userId &&
+                    <div style={{ display: "flex", marginTop: '10px', justifyContent: 'space-between' }}>
                         <Button color="secondary" variant="outlined" onClick={() => dispatch(deleteMovie(movie._id, history))} >DELETE</Button>
                         <Button color="secondary" variant="outlined" onClick={() => history.push(`/editMovie/${movie?._id}`)} >EDIT</Button>
                     </div>
@@ -154,8 +179,8 @@ const Details = () => {
                     </AccordionSummary>
                     <AccordionDetails style={{ display: 'block' }}>
                         <Tabs value={value} indicatorColor="secondary" textColor="secondary" onChange={(event: React.ChangeEvent<{}>, newValue: number) => setValue(newValue)} centered>
-                            <Tab label="Nominations" icon={<EventNoteIcon />} {...a11yProps(0)} style={{width: '50%'}} />
-                            <Tab label="Wins" icon={<FavoriteIcon />} {...a11yProps(1)} style={{width: '50%'}} />
+                            <Tab label="Nominations" icon={<EventNoteIcon />} {...a11yProps(0)} style={{ width: '50%' }} />
+                            <Tab label="Wins" icon={<FavoriteIcon />} {...a11yProps(1)} style={{ width: '50%' }} />
                         </Tabs>
                         <TabPanel value={value} index={0}>nominations: 0</TabPanel>
                         <TabPanel value={value} index={1}>{movie?.awards?.text}</TabPanel>
@@ -164,13 +189,13 @@ const Details = () => {
             </CardContent>
         </Card >
 
-    const comments =
+    const commentsSection =
         <Card raised style={{ height: '500px' }}>
             <CardContent>
-                <div className={classes.commentsUpperContainer}>
-                    <Typography gutterBottom variant="h6">Comments ({movie?.comments?.length}):</Typography>
-                    {movie?.comments?.length === 0 && <Typography className={classes.noCommentsTypography}>No comments so far...</Typography>}
-                    {movie?.comments?.map((c: Comment, i: number) => (
+                <div className={classes.commentsUpperContainer} style={loggedUser && Object.keys(loggedUser).length !== 0 ? {height: "200px"} : {height: "400px"}}>
+                    <Typography gutterBottom variant="h6">Comments ({movieComments?.length}):</Typography>
+                    {movieComments?.length === 0 && <Typography className={classes.noCommentsTypography}>No comments so far...</Typography>}
+                    {movieComments?.map((c: Comment, i: number) => (
                         <Typography key={i} gutterBottom variant="subtitle1">
                             <strong>{c.name}: </strong>
                             {c.text}
@@ -178,34 +203,42 @@ const Details = () => {
                     ))}
                     <div ref={commentsRef} />
                 </div>
-                <div className={classes.commentsLowerContainer}>
-                    <Typography gutterBottom variant="h6">Vote:</Typography>
-                    <Rating name="half-rating" defaultValue={0} precision={0.5} size="small" max={10} />
-                    <Typography gutterBottom variant="h6">Write a comment:</Typography>
-                    <TextField fullWidth rows={4} variant="outlined" color="secondary" label="Comment" multiline />
-                    <br />
-                    <Button fullWidth color="secondary" variant="contained" >Comment</Button>
-                </div>
+                <div style={{margin: "15px"}}></div>
+                {loggedUser && Object.keys(loggedUser).length !== 0 ?
+                    <div className={classes.commentsLowerContainer}>
+                        <Typography gutterBottom variant="h6">Vote:</Typography>
+                        <Rating name="half-rating" defaultValue={0} precision={0.5} size="small" max={10} />
+                        <Typography gutterBottom variant="h6">Write a comment:</Typography>
+                        <TextField value={comment} onChange={(e : any) => setComment(e.target.value)} fullWidth rows={4} variant="outlined" color="secondary" label="Comment" multiline />
+                        <br />
+                        <Button fullWidth color="secondary" variant="contained" onClick={handleComment}>Comment</Button>
+                    </div>
+                    :
+                    <div className={classes.commentsLowerContainer}>
+                        <Typography variant="subtitle2" gutterBottom>Only logged users can comment</Typography>
+                        <Button fullWidth color="secondary" variant="contained" onClick={() => history.push('/loginUser')}>Sign in</Button>
+                    </div>
+                }
             </CardContent>
         </Card>
 
     const lastActionDiv =
         <div className={classes.updateOrCreateDiv}>
             <div>Created: {moment(movie?.lastupdated).fromNow()}</div>
-            <div>Last updated: {moment(movie?.lastUpdated).fromNow()}</div>
+            <div>Last action: {moment(movie?.lastUpdated).fromNow()}</div>
         </div>
 
     return (
-        <Container>
+        <Container style={{marginTop: "80px"}}>
             {lastActionDiv}
             <Grow in timeout={{ enter: 1500 }}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={3}>{poster}</Grid>
-                    <Grid item xs={12} sm={6}>{content}</Grid>
-                    <Grid item xs={12} sm={3}>{comments}</Grid>
+                    <Grid item xs={12} sm={3}>{posterSection}</Grid>
+                    <Grid item xs={12} sm={6}>{contentSection}</Grid>
+                    <Grid item xs={12} sm={3}>{commentsSection}</Grid>
                 </Grid>
             </Grow>
-            
+
             <Snackbar open={showEditSuccess} autoHideDuration={6000} onClose={handleCloseEditSuccess}>
                 <Alert onClose={handleCloseEditSuccess} severity="success">Edit successful</Alert>
             </Snackbar>

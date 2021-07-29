@@ -16,15 +16,12 @@ export default makeStyles((theme) => ({
         marginTop: '1rem'
     },
     commentsUpperContainer: {
-        height: '200px',
         overflowY: 'auto',
     },
     commentsLowerContainer: {
-        height: '270px',
         display: 'flex',
         flexDirection: 'column',
         placeContent: 'flex-end'
-
     },
 
     noCommentsTypography: {

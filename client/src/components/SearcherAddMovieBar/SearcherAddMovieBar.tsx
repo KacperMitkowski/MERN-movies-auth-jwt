@@ -9,7 +9,7 @@ const SearcherAddMovieBar = () => {
     const [user, setUser] = useState(JSON.parse(profile));
 
     return (
-        <Grid container spacing={3} alignItems="center" style={{marginBottom: "20px", marginTop: "10px"}}>
+        <Grid container spacing={3} alignItems="center" style={{marginBottom: "20px", marginTop: "80px"}}>
             {user?.result ?
                 <Grid item xs={12} sm={4}>
                     <Button onClick={() => history.push('/addMovie')} color="secondary" variant="contained">Add movie</Button>

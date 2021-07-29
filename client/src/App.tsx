@@ -25,7 +25,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Container maxWidth="xl">
           <Navbar />
           <Switch>
             <Route path="/" exact component={() => <Redirect to="/movies" />} />
@@ -38,7 +37,6 @@ const App = () => {
             <Route path="/editMovie/:id" exact component={EditMovie} />
             <Route path="/unauthorized" exact component={Unauthorized} />
           </Switch>
-        </Container>
       </ThemeProvider>
     </BrowserRouter>
   );

@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE, CREATE, ERROR, FETCH_BY_SEARCH, UPDATE, DELETE, DELETE_SUCCESSFUL, UPDATE_SUCCESSFUL } from '../constants/actionTypes';
+import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE, CREATE, ERROR, FETCH_BY_SEARCH, UPDATE, DELETE, DELETE_SUCCESSFUL, UPDATE_SUCCESSFUL, COMMENT } from '../constants/actionTypes';
 
 export const getMovies = (page: number) => async (dispatch: any) => {
   try {
@@ -88,3 +88,4 @@ export const deleteMovie = (id, history) => async (dispatch : any) => {
     console.log(error);
   }
 };
+

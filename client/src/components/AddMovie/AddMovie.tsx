@@ -133,7 +133,7 @@ const AddMovie = () => {
     }
 
     return (
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="md" style={{marginTop: "80px"}}>
             <Paper className={classes.paper} elevation={6}>
                 <Typography component="h1" variant="h5">Add Movie</Typography>
                 <AddCircleTwoToneIcon fontSize="large" color="secondary" className={classes.icon} />

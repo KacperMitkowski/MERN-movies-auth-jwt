@@ -1,4 +1,4 @@
-import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE, CREATE, FETCH_BY_SEARCH, UPDATE, DELETE, DELETE_SUCCESSFUL, UPDATE_SUCCESSFUL } from '../constants/actionTypes';
+import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_MOVIE, CREATE, FETCH_BY_SEARCH, UPDATE, DELETE, DELETE_SUCCESSFUL, UPDATE_SUCCESSFUL, COMMENT } from '../constants/actionTypes';
 
 export default (state = { isLoading: true, movies: [] }, action: any) => {
     switch (action.type) {
@@ -27,6 +27,16 @@ export default (state = { isLoading: true, movies: [] }, action: any) => {
             return { ...state, movies: state.movies.filter((movie) => movie._id !== action.payload) };
         case DELETE_SUCCESSFUL:
             return { ...state, deleteSuccessful: action?.payload };
+        case COMMENT:
+            return {
+                ...state,
+                posts: state.movies.map((movie) => {
+                    if (movie._id == +action.payload._id) {
+                        return action.payload;
+                    }
+                    return movie;
+                }),
+            };
         default:
             return state;
     }
